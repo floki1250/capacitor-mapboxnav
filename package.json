@@ -1,6 +1,6 @@
 {
   "name": "capacitor-mapboxnav",
-  "version": "0.0.2",
+  "version": "1.0.1",
   "description": "capacitor mapbox navigation ndk",
   "main": "dist/plugin.cjs.js",
   "module": "dist/esm/index.js",
@@ -19,15 +19,21 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/castelioit/capacitor-mapboxnav.git"
+    "url": "git+https://github.com/floki1250/capacitor-mapboxnav.git"
   },
   "bugs": {
-    "url": "https://github.com/castelioit/capacitor-mapboxnav/issues"
+    "url": "https://github.com/floki1250/capacitor-mapboxnav/issues"
   },
   "keywords": [
+    "ionic",
     "capacitor",
     "plugin",
-    "native"
+    "native",
+    "mapbox",
+    "navigation",
+    "android",
+    "ios",
+    "web"
   ],
   "scripts": {
     "verify": "npm run verify:ios && npm run verify:android && npm run verify:web",
