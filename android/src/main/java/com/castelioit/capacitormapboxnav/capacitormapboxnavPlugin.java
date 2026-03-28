@@ -5,6 +5,7 @@ import com.getcapacitor.Plugin;
 import com.getcapacitor.PluginCall;
 import com.getcapacitor.PluginMethod;
 import com.getcapacitor.annotation.CapacitorPlugin;
+import org.json.JSONException;
 
 @CapacitorPlugin(name = "capacitormapboxnav")
 public class capacitormapboxnavPlugin extends Plugin {
@@ -38,7 +39,7 @@ public class capacitormapboxnavPlugin extends Plugin {
     }
 
     @PluginMethod
-    public void startNavigation(PluginCall call) {
+    public void startNavigation(PluginCall call) throws JSONException {
         JSObject origin = call.getObject("origin");
         JSObject destination = call.getObject("destination");
         Boolean simulateRoute = call.getBoolean("simulateRoute", false);
@@ -74,7 +75,7 @@ public class capacitormapboxnavPlugin extends Plugin {
 
         getActivity().runOnUiThread(() -> {
             try {
-                implementation.startNavigation(getActivity(), originLat, originLng, destLat, destLng, simulateRoute);
+                implementation.startNavigation((Activity) getActivity(), originLat, originLng, destLat, destLng, simulateRoute);
                 call.resolve();
             } catch (Exception e) {
                 call.reject("Failed to start navigation: " + e.getMessage());
