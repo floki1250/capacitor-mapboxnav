@@ -70,8 +70,17 @@ class NavigationActivity : AppCompatActivity() {
         destLng = intent.getDoubleExtra("destLng", 0.0)
         simulateRoute = intent.getBooleanExtra("simulateRoute", false)
 
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), 1)
+        val permissions = mutableListOf(Manifest.permission.ACCESS_FINE_LOCATION)
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.TIRAMISU) {
+            permissions.add(Manifest.permission.POST_NOTIFICATIONS)
+        }
+
+        val missingPermissions = permissions.filter {
+            ActivityCompat.checkSelfPermission(this, it) != PackageManager.PERMISSION_GRANTED
+        }
+
+        if (missingPermissions.isNotEmpty()) {
+            ActivityCompat.requestPermissions(this, missingPermissions.toTypedArray(), 1)
         } else {
             initializeMapComponents()
         }
@@ -79,11 +88,14 @@ class NavigationActivity : AppCompatActivity() {
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == 1 && grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            initializeMapComponents()
-        } else {
-            Toast.makeText(this, "Permission denied", Toast.LENGTH_SHORT).show()
-            finish()
+        if (requestCode == 1) {
+            val allGranted = grantResults.all { it == PackageManager.PERMISSION_GRANTED }
+            if (allGranted) {
+                initializeMapComponents()
+            } else {
+                Toast.makeText(this, "Permissions denied. Navigation cannot start.", Toast.LENGTH_SHORT).show()
+                finish()
+            }
         }
     }
 
@@ -121,6 +133,37 @@ class NavigationActivity : AppCompatActivity() {
         navigationCamera = NavigationCamera(mapView.mapboxMap, mapView.camera, viewportDataSource)
         routeLineApi = MapboxRouteLineApi(MapboxRouteLineApiOptions.Builder().build())
         routeLineView = MapboxRouteLineView(MapboxRouteLineViewOptions.Builder(this).build())
+    }
+
+    override fun onStart() {
+        super.onStart()
+        if (::mapView.isInitialized) {
+            mapView.onStart()
+        }
+    }
+
+    override fun onStop() {
+        super.onStop()
+        if (::mapView.isInitialized) {
+            mapView.onStop()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        if (::mapView.isInitialized) {
+            mapView.onDestroy()
+        }
+        if (::routeLineApi.isInitialized) {
+            routeLineApi.cancel()
+        }
+    }
+
+    override fun onLowMemory() {
+        super.onLowMemory()
+        if (::mapView.isInitialized) {
+            mapView.onLowMemory()
+        }
     }
 
     private val routesObserver = RoutesObserver { routeUpdateResult ->
@@ -163,7 +206,16 @@ class NavigationActivity : AppCompatActivity() {
                     mapboxNavigation.startTripSession()
                 }
             }
-            override fun onDetached(mapboxNavigation: MapboxNavigation) {}
+            override fun onDetached(mapboxNavigation: MapboxNavigation) {
+                mapboxNavigation.unregisterRoutesObserver(routesObserver)
+                mapboxNavigation.unregisterLocationObserver(locationObserver)
+                if (simulateRoute && ::replayProgressObserver.isInitialized) {
+                    mapboxNavigation.unregisterRouteProgressObserver(replayProgressObserver)
+                    mapboxNavigation.stopReplayTripSession()
+                } else {
+                    mapboxNavigation.stopTripSession()
+                }
+            }
         },
         onInitialize = this::initNavigation
     )
@@ -193,6 +245,10 @@ class NavigationActivity : AppCompatActivity() {
                     Toast.makeText(this@NavigationActivity, "Route request failed", Toast.LENGTH_SHORT).show()
                 }
                 override fun onRoutesReady(routes: List<NavigationRoute>, routerOrigin: String) {
+                    if (routes.isEmpty()) {
+                        Toast.makeText(this@NavigationActivity, "No routes found", Toast.LENGTH_SHORT).show()
+                        return
+                    }
                     mapboxNavigation.setNavigationRoutes(routes)
                     if (simulateRoute) {
                         val replayData = replayRouteMapper.mapDirectionsRouteGeometry(routes.first().directionsRoute)

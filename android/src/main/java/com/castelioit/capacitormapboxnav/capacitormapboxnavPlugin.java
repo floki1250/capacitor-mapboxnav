@@ -58,6 +58,20 @@ public class capacitormapboxnavPlugin extends Plugin {
             return;
         }
 
+        if (
+            originLat < -90 ||
+            originLat > 90 ||
+            originLng < -180 ||
+            originLng > 180 ||
+            destLat < -90 ||
+            destLat > 90 ||
+            destLng < -180 ||
+            destLng > 180
+        ) {
+            call.reject("Coordinates out of range");
+            return;
+        }
+
         getActivity().runOnUiThread(() -> {
             try {
                 implementation.startNavigation(getActivity(), originLat, originLng, destLat, destLng, simulateRoute);

@@ -24,10 +24,10 @@ public class capacitormapboxnavPlugin: CAPPlugin, CAPBridgedPlugin {
     }
 
     @objc func initialize(_ call: CAPPluginCall) {
-        call.reject("Not implemented on iOS yet")
+        call.reject("initialize() is not implemented on iOS yet. Only Android is supported at this time.")
     }
 
     @objc func startNavigation(_ call: CAPPluginCall) {
-        call.reject("Not implemented on iOS yet")
+        call.reject("startNavigation() is not implemented on iOS yet. Only Android is supported at this time.")
     }
 }
