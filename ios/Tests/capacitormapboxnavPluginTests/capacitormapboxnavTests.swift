@@ -12,4 +12,12 @@ class capacitormapboxnavTests: XCTestCase {
 
         XCTAssertEqual(value, result)
     }
+
+    func testEchoEmpty() {
+        let implementation = capacitormapboxnav()
+        let value = ""
+        let result = implementation.echo(value)
+
+        XCTAssertEqual(value, result)
+    }
 }
