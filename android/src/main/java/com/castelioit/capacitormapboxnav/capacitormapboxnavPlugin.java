@@ -19,4 +19,52 @@ public class capacitormapboxnavPlugin extends Plugin {
         ret.put("value", implementation.echo(value));
         call.resolve(ret);
     }
+
+    @PluginMethod
+    public void initialize(PluginCall call) {
+        String accessToken = call.getString("accessToken");
+        if (accessToken == null) {
+            call.reject("AccessToken is required");
+            return;
+        }
+        getActivity().runOnUiThread(() -> {
+            try {
+                implementation.initialize(getContext(), accessToken);
+                call.resolve();
+            } catch (Exception e) {
+                call.reject("Initialization failed: " + e.getMessage());
+            }
+        });
+    }
+
+    @PluginMethod
+    public void startNavigation(PluginCall call) {
+        JSObject origin = call.getObject("origin");
+        JSObject destination = call.getObject("destination");
+        Boolean simulateRoute = call.getBoolean("simulateRoute", false);
+
+        if (origin == null || destination == null) {
+            call.reject("Origin and destination are required");
+            return;
+        }
+
+        Double originLat = origin.getDouble("latitude");
+        Double originLng = origin.getDouble("longitude");
+        Double destLat = destination.getDouble("latitude");
+        Double destLng = destination.getDouble("longitude");
+
+        if (originLat == null || originLng == null || destLat == null || destLng == null) {
+            call.reject("Invalid origin or destination coordinates");
+            return;
+        }
+
+        getActivity().runOnUiThread(() -> {
+            try {
+                implementation.startNavigation(getActivity(), originLat, originLng, destLat, destLng, simulateRoute);
+                call.resolve();
+            } catch (Exception e) {
+                call.reject("Failed to start navigation: " + e.getMessage());
+            }
+        });
+    }
 }

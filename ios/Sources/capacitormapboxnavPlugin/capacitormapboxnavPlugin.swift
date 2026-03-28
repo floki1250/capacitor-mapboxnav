@@ -10,7 +10,9 @@ public class capacitormapboxnavPlugin: CAPPlugin, CAPBridgedPlugin {
     public let identifier = "capacitormapboxnavPlugin"
     public let jsName = "capacitormapboxnav"
     public let pluginMethods: [CAPPluginMethod] = [
-        CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise)
+        CAPPluginMethod(name: "echo", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "initialize", returnType: CAPPluginReturnPromise),
+        CAPPluginMethod(name: "startNavigation", returnType: CAPPluginReturnPromise)
     ]
     private let implementation = capacitormapboxnav()
 
@@ -19,5 +21,13 @@ public class capacitormapboxnavPlugin: CAPPlugin, CAPBridgedPlugin {
         call.resolve([
             "value": implementation.echo(value)
         ])
+    }
+
+    @objc func initialize(_ call: CAPPluginCall) {
+        call.reject("Not implemented on iOS yet")
+    }
+
+    @objc func startNavigation(_ call: CAPPluginCall) {
+        call.reject("Not implemented on iOS yet")
     }
 }
