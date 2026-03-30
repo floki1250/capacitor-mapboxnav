@@ -6,4 +6,10 @@ export interface capacitormapboxnavPlugin {
     destination: { latitude: number; longitude: number };
     simulateRoute?: boolean;
   }): Promise<void>;
+  startTurnByTurnExperience(options: {
+    origin: { latitude: number; longitude: number };
+    destination: { latitude: number; longitude: number };
+    simulateRoute?: boolean;
+  }): Promise<void>;
+  startFreeDrive(): Promise<void>;
 }

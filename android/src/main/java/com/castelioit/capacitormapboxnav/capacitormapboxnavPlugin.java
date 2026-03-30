@@ -75,10 +75,67 @@ public class capacitormapboxnavPlugin extends Plugin {
 
         getActivity().runOnUiThread(() -> {
             try {
-                implementation.startNavigation((Activity) getActivity(), originLat, originLng, destLat, destLng, simulateRoute);
+                implementation.startNavigation(getActivity(), originLat, originLng, destLat, destLng, simulateRoute);
                 call.resolve();
             } catch (Exception e) {
                 call.reject("Failed to start navigation: " + e.getMessage());
+            }
+        });
+    }
+
+    @PluginMethod
+    public void startTurnByTurnExperience(PluginCall call) throws JSONException {
+        JSObject origin = call.getObject("origin");
+        JSObject destination = call.getObject("destination");
+        Boolean simulateRoute = call.getBoolean("simulateRoute", false);
+
+        if (origin == null || destination == null) {
+            call.reject("Origin and destination are required");
+            return;
+        }
+
+        Double originLat = origin.getDouble("latitude");
+        Double originLng = origin.getDouble("longitude");
+        Double destLat = destination.getDouble("latitude");
+        Double destLng = destination.getDouble("longitude");
+
+        if (originLat == null || originLng == null || destLat == null || destLng == null) {
+            call.reject("Invalid origin or destination coordinates");
+            return;
+        }
+
+        if (
+            originLat < -90 ||
+            originLat > 90 ||
+            originLng < -180 ||
+            originLng > 180 ||
+            destLat < -90 ||
+            destLat > 90 ||
+            destLng < -180 ||
+            destLng > 180
+        ) {
+            call.reject("Coordinates out of range");
+            return;
+        }
+
+        getActivity().runOnUiThread(() -> {
+            try {
+                implementation.startTurnByTurnExperience(getActivity(), originLat, originLng, destLat, destLng, simulateRoute);
+                call.resolve();
+            } catch (Exception e) {
+                call.reject("Failed to start turn-by-turn experience: " + e.getMessage());
+            }
+        });
+    }
+
+    @PluginMethod
+    public void startFreeDrive(PluginCall call) {
+        getActivity().runOnUiThread(() -> {
+            try {
+                implementation.startFreeDrive(getActivity());
+                call.resolve();
+            } catch (Exception e) {
+                call.reject("Failed to start free drive: " + e.getMessage());
             }
         });
     }

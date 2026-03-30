@@ -32,4 +32,20 @@ class capacitormapboxnav {
         }
         activity.startActivity(intent)
     }
+
+    fun startTurnByTurnExperience(activity: Activity, originLat: Double, originLng: Double, destLat: Double, destLng: Double, simulateRoute: Boolean) {
+        val intent = Intent(activity, TurnByTurnExperienceActivity::class.java).apply {
+            putExtra("originLat", originLat)
+            putExtra("originLng", originLng)
+            putExtra("destLat", destLat)
+            putExtra("destLng", destLng)
+            putExtra("simulateRoute", simulateRoute)
+        }
+        activity.startActivity(intent)
+    }
+
+    fun startFreeDrive(activity: Activity) {
+        val intent = Intent(activity, FreeDriveActivity::class.java)
+        activity.startActivity(intent)
+    }
 }

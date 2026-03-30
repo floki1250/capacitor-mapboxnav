@@ -12,5 +12,13 @@
             android:name=".NavigationActivity"
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:exported="false" />
+        <activity
+            android:name=".TurnByTurnExperienceActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:exported="false" />
+        <activity
+            android:name=".FreeDriveActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:exported="false" />
     </application>
 </manifest>

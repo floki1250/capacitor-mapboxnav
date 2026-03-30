@@ -19,4 +19,16 @@ export class capacitormapboxnavWeb extends WebPlugin implements capacitormapboxn
   }): Promise<void> {
     console.log('START_NAVIGATION', options);
   }
+
+  async startTurnByTurnExperience(options: {
+    origin: { latitude: number; longitude: number };
+    destination: { latitude: number; longitude: number };
+    simulateRoute?: boolean;
+  }): Promise<void> {
+    console.log('START_TURN_BY_TURN_EXPERIENCE', options);
+  }
+
+  async startFreeDrive(): Promise<void> {
+    console.log('START_FREE_DRIVE');
+  }
 }
