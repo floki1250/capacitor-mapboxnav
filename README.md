@@ -19,7 +19,7 @@ bun add capacitor-mapboxnav
 Sync native files
 
 ```bash
-npx cap sync 
+bunx cap sync 
 ```
 
 ## Android Setup
@@ -40,6 +40,8 @@ Mapbox Navigation requires a secret token to download its SDK.
 * [`echo(...)`](#echo)
 * [`initialize(...)`](#initialize)
 * [`startNavigation(...)`](#startnavigation)
+* [`startTurnByTurnExperience(...)`](#startturnbyturnexperience)
+* [`startFreeDrive()`](#startfreedrive)
 
 </docgen-index>
 
@@ -51,6 +53,8 @@ Mapbox Navigation requires a secret token to download its SDK.
 ```typescript
 echo(options: { value: string; }) => Promise<{ value: string; }>
 ```
+
+Echo back the provided value.
 
 | Param         | Type                            |
 | ------------- | ------------------------------- |
@@ -67,6 +71,9 @@ echo(options: { value: string; }) => Promise<{ value: string; }>
 initialize(options: { accessToken: string; }) => Promise<void>
 ```
 
+Initialize the Mapbox Navigation SDK with your public access token.
+This must be called before any navigation activity.
+
 | Param         | Type                                  |
 | ------------- | ------------------------------------- |
 | **`options`** | <code>{ accessToken: string; }</code> |
@@ -80,9 +87,40 @@ initialize(options: { accessToken: string; }) => Promise<void>
 startNavigation(options: { origin: { latitude: number; longitude: number; }; destination: { latitude: number; longitude: number; }; simulateRoute?: boolean; }) => Promise<void>
 ```
 
+Start a basic navigation session with a simple map overview.
+Useful for background navigation or lightweight tracking.
+
 | Param         | Type                                                                                                                                               |
 | ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **`options`** | <code>{ origin: { latitude: number; longitude: number; }; destination: { latitude: number; longitude: number; }; simulateRoute?: boolean; }</code> |
+
+--------------------
+
+
+### startTurnByTurnExperience(...)
+
+```typescript
+startTurnByTurnExperience(options: { origin: { latitude: number; longitude: number; }; destination: { latitude: number; longitude: number; }; simulateRoute?: boolean; }) => Promise<void>
+```
+
+Start a full Turn-by-Turn navigation experience.
+Includes instruction banners, maneuvers, speed limits, and total trip progress.
+
+| Param         | Type                                                                                                                                               |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **`options`** | <code>{ origin: { latitude: number; longitude: number; }; destination: { latitude: number; longitude: number; }; simulateRoute?: boolean; }</code> |
+
+--------------------
+
+
+### startFreeDrive()
+
+```typescript
+startFreeDrive() => Promise<void>
+```
+
+Start a Free Drive session (Position tracking).
+Shows the map centered on the user with no active route or destination.
 
 --------------------
 
@@ -93,15 +131,16 @@ startNavigation(options: { origin: { latitude: number; longitude: number; }; des
 ```typescript
 import { capacitormapboxnav } from 'capacitor-mapboxnav';
 
-async function navigate() {
+async function startTurnByTurn() {
   await capacitormapboxnav.initialize({
     accessToken: 'YOUR_PUBLIC_MAPBOX_ACCESS_TOKEN'
   });
 
-  await capacitormapboxnav.startNavigation({
-    origin: { latitude: 37.7749, longitude: -122.4194 },
-    destination: { latitude: 37.7833, longitude: -122.4167 },
+  await capacitormapboxnav.startTurnByTurnExperience({
+    origin: { latitude: 35.723976, longitude: 10.745365 },
+    destination: { latitude: 35.831016, longitude: 10.626204 },
     simulateRoute: true
   });
 }
 ```
+

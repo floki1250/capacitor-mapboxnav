@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">playground</string>
+    <string name="title_activity_main">playground</string>
+    <string name="package_name">com.floki.playground</string>
+    <string name="custom_url_scheme">com.floki.playground</string>
+</resources>

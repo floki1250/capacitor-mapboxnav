@@ -1,6 +1,7 @@
 package com.castelioit.capacitormapboxnav
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.os.Bundle
@@ -15,7 +16,9 @@ import com.mapbox.common.location.Location
 import com.mapbox.geojson.Point
 import com.mapbox.maps.EdgeInsets
 import com.mapbox.maps.ImageHolder
+import com.mapbox.maps.plugin.PuckBearing
 import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.locationcomponent.createDefault2DPuck
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.location
@@ -41,6 +44,7 @@ import com.mapbox.navigation.core.trip.session.LocationObserver
 import com.mapbox.navigation.core.trip.session.RouteProgressObserver
 import com.mapbox.navigation.core.trip.session.VoiceInstructionsObserver
 import com.castelioit.capacitormapboxnav.databinding.MapboxActivityTurnByTurnExperienceBinding
+import com.mapbox.maps.MapboxExperimental
 import com.mapbox.navigation.tripdata.maneuver.api.MapboxManeuverApi
 import com.mapbox.navigation.tripdata.progress.api.MapboxTripProgressApi
 import com.mapbox.navigation.tripdata.progress.model.DistanceRemainingFormatter
@@ -404,16 +408,20 @@ class TurnByTurnExperienceActivity : AppCompatActivity() {
         onInitialize = this::initNavigation
     )
 
+    private fun Intent.getExtraDouble(key: String, defaultValue: Double): Double {
+        return if (hasExtra(key)) getDoubleExtra(key, defaultValue) else defaultValue
+    }
+
     @SuppressLint("MissingPermission")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = MapboxActivityTurnByTurnExperienceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        originLat = intent.getDoubleExtra("originLat", 0.0)
-        originLng = intent.getDoubleExtra("originLng", 0.0)
-        destLat = intent.getDoubleExtra("destLat", 0.0)
-        destLng = intent.getDoubleExtra("destLng", 0.0)
+        originLat = intent.getExtraDouble("originLat", 0.0)
+        originLng = intent.getExtraDouble("originLng", 0.0)
+        destLat = intent.getExtraDouble("destLat", 0.0)
+        destLng = intent.getExtraDouble("destLng", 0.0)
         simulateRoute = intent.getBooleanExtra("simulateRoute", false)
 
         // initialize Navigation Camera
@@ -449,6 +457,8 @@ class TurnByTurnExperienceActivity : AppCompatActivity() {
         } else {
             viewportDataSource.followingPadding = followingPadding
         }
+
+
 
         // make sure to use the same DistanceFormatterOptions across different features
         val distanceFormatterOptions = DistanceFormatterOptions.Builder(this).build()
@@ -563,12 +573,14 @@ class TurnByTurnExperienceActivity : AppCompatActivity() {
         voiceInstructionsPlayer.shutdown()
     }
 
+    @OptIn(MapboxExperimental::class)
     private fun initNavigation() {
         // initialize location puck
         binding.mapView.location.apply {
             setLocationProvider(navigationLocationProvider)
-            this.locationPuck = LocationPuck2D()
+            this.locationPuck = createDefault2DPuck( true)
             puckBearingEnabled = true
+            puckBearing = PuckBearing.COURSE
             enabled = true
         }
     }

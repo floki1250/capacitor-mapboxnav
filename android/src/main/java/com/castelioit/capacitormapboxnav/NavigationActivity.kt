@@ -2,6 +2,7 @@ package com.castelioit.capacitormapboxnav
 
 import android.Manifest
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Bundle
 import android.widget.Toast
@@ -14,23 +15,23 @@ import com.mapbox.maps.CameraOptions
 import com.mapbox.maps.EdgeInsets
 import com.mapbox.maps.MapInitOptions
 import com.mapbox.maps.MapView
+import com.mapbox.maps.MapboxExperimental
 import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.PuckBearing
+import com.mapbox.maps.plugin.locationcomponent.createDefault2DPuck
 import com.mapbox.maps.plugin.animation.camera
 import com.mapbox.maps.plugin.attribution.attribution
 import com.mapbox.maps.plugin.compass.compass
-import com.mapbox.maps.plugin.locationcomponent.createDefault2DPuck
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.logo.logo
 import com.mapbox.maps.plugin.scalebar.scalebar
 import com.mapbox.navigation.base.ExperimentalPreviewMapboxNavigationAPI
 import com.mapbox.navigation.base.extensions.applyDefaultNavigationOptions
-import com.mapbox.navigation.base.options.NavigationOptions
 import com.mapbox.navigation.base.route.NavigationRoute
 import com.mapbox.navigation.base.route.NavigationRouterCallback
 import com.mapbox.navigation.base.route.RouterFailure
 import com.mapbox.navigation.core.MapboxNavigation
 import com.mapbox.navigation.core.directions.session.RoutesObserver
-import com.mapbox.navigation.core.lifecycle.MapboxNavigationApp
 import com.mapbox.navigation.core.lifecycle.MapboxNavigationObserver
 import com.mapbox.navigation.core.lifecycle.requireMapboxNavigation
 import com.mapbox.navigation.core.replay.route.ReplayProgressObserver
@@ -64,10 +65,10 @@ class NavigationActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        originLat = intent.getDoubleExtra("originLat", 0.0)
-        originLng = intent.getDoubleExtra("originLng", 0.0)
-        destLat = intent.getDoubleExtra("destLat", 0.0)
-        destLng = intent.getDoubleExtra("destLng", 0.0)
+        originLat = intent.getExtraDouble("originLat", 0.0)
+        originLng = intent.getExtraDouble("originLng", 0.0)
+        destLat = intent.getExtraDouble("destLat", 0.0)
+        destLng = intent.getExtraDouble("destLng", 0.0)
         simulateRoute = intent.getBooleanExtra("simulateRoute", false)
 
         val permissions = mutableListOf(Manifest.permission.ACCESS_FINE_LOCATION)
@@ -86,6 +87,10 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
+    private fun Intent.getExtraDouble(key: String, defaultValue: Double): Double {
+        return if (hasExtra(key)) getDoubleExtra(key, defaultValue) else defaultValue
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == 1) {
@@ -99,6 +104,7 @@ class NavigationActivity : AppCompatActivity() {
         }
     }
 
+    @OptIn(MapboxExperimental::class)
     private fun initializeMapComponents() {
         mapView = MapView(this, MapInitOptions(
             this,
@@ -115,7 +121,7 @@ class NavigationActivity : AppCompatActivity() {
         
         mapView.location.apply {
             setLocationProvider(navigationLocationProvider)
-            locationPuck = LocationPuck2D()
+            locationPuck = createDefault2DPuck( true)
             enabled = true
         }
 
@@ -129,6 +135,8 @@ class NavigationActivity : AppCompatActivity() {
             150.0 * pixelDensity,
             40.0 * pixelDensity
         )
+        
+
 
         navigationCamera = NavigationCamera(mapView.mapboxMap, mapView.camera, viewportDataSource)
         routeLineApi = MapboxRouteLineApi(MapboxRouteLineApiOptions.Builder().build())
@@ -211,9 +219,10 @@ class NavigationActivity : AppCompatActivity() {
                 mapboxNavigation.unregisterLocationObserver(locationObserver)
                 if (simulateRoute && ::replayProgressObserver.isInitialized) {
                     mapboxNavigation.unregisterRouteProgressObserver(replayProgressObserver)
-                    mapboxNavigation.stopReplayTripSession()
-                } else {
-                    mapboxNavigation.stopTripSession()
+                }
+                mapboxNavigation.stopTripSession()
+                if (simulateRoute) {
+                    mapboxNavigation.mapboxReplayer.finish()
                 }
             }
         },
@@ -226,7 +235,9 @@ class NavigationActivity : AppCompatActivity() {
         
         mapView.location.apply {
             setLocationProvider(navigationLocationProvider)
-            this.locationPuck = createDefault2DPuck()
+            this.locationPuck = createDefault2DPuck( true)
+            puckBearingEnabled = true
+            puckBearing = PuckBearing.COURSE
             enabled = true
         }
 
@@ -242,7 +253,9 @@ class NavigationActivity : AppCompatActivity() {
             object : NavigationRouterCallback {
                 override fun onCanceled(routeOptions: RouteOptions, routerOrigin: String) {}
                 override fun onFailure(reasons: List<RouterFailure>, routeOptions: RouteOptions) {
-                    Toast.makeText(this@NavigationActivity, "Route request failed", Toast.LENGTH_SHORT).show()
+                    val errorMessage = reasons.joinToString(", ") { it.message }
+                    android.util.Log.e("NavigationActivity", "Route request failed: $errorMessage")
+                    Toast.makeText(this@NavigationActivity, "Route failed: $errorMessage", Toast.LENGTH_LONG).show()
                 }
                 override fun onRoutesReady(routes: List<NavigationRoute>, routerOrigin: String) {
                     if (routes.isEmpty()) {
