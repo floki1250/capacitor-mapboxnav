@@ -1,5 +1,6 @@
 # @castelio-it/capacitor-mapboxnav
 [![forthebadge](/badges/built-for-android.svg)](https://forthebadge.com)
+
 [![NPM Version](https://img.shields.io/npm/v/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=3380FF)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
 [![NPM Downloads](https://img.shields.io/npm/dm/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=00D1B2)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
 [![License](https://img.shields.io/npm/l/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=F8D800)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
