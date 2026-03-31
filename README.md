@@ -1,12 +1,8 @@
 # @castelio-it/capacitor-mapboxnav
-[![npm version](https://img.shields.io/npm/v/country-atlas)](https://www.npmjs.com/package/country-atlas)
-[![npm downloads](https://img.shields.io/npm/dt/country-atlas)](https://www.npmjs.com/package/country-atlas)
-[![license](https://img.shields.io/github/license/prathinsajith/country-atlas)](https://github.com/prathinsajith/country-atlas/blob/main/LICENSE)
+[![forthebadge](/badges/built-for-android.svg)](https://forthebadge.com)
+[![![NPM Downloads](https://img.shields.io/npm/dw/%40castelio-it%2Fcapacitor-mapboxnav?style=flat)](https://img.shields.io/npm/v/%40castelio-it%2Fcapacitor-mapboxnav?style=for-the-badge)
 [![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue)](https://www.typescriptlang.org/)
-[![bundle size](https://img.shields.io/bundlephobia/minzip/country-atlas)](https://bundlephobia.com/package/country-atlas)
 capacitor mapbox navigation ndk
-[![NPM Downloads](https://img.shields.io/npm/dw/%40castelio-it%2Fcapacitor-mapboxnav?style=flat)](https://img.shields.io/npm/v/%40castelio-it%2Fcapacitor-mapboxnav?style=for-the-badge
-)
 
 ## Install
 
