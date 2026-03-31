@@ -1,8 +1,15 @@
 # @castelio-it/capacitor-mapboxnav
-[![forthebadge](/badges/built-for-android.svg)](https://forthebadge.com)
-[![![NPM Downloads](https://img.shields.io/npm/dw/%40castelio-it%2Fcapacitor-mapboxnav?style=flat)](https://img.shields.io/npm/v/%40castelio-it%2Fcapacitor-mapboxnav?style=for-the-badge)
-[![TypeScript](https://img.shields.io/badge/TypeScript-ready-blue)](https://www.typescriptlang.org/)
-capacitor mapbox navigation ndk
+
+[![NPM Version](https://img.shields.io/npm/v/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=3380FF)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
+[![NPM Downloads](https://img.shields.io/npm/dm/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=00D1B2)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
+[![License](https://img.shields.io/npm/l/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=F8D800)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
+[![Capacitor](https://img.shields.io/badge/Capacitor-8+-blue?style=for-the-badge&logo=capacitor&logoColor=white)](https://capacitorjs.com/)
+
+> [!IMPORTANT]
+> **Mapbox Navigation Plugin for Capacitor**
+> Robust Turn-by-Turn navigation, Location Tracking, and Free Drive support for Android (iOS coming soon).
+
+**capacitor-mapboxnav** provides a powerful bridge for the Mapbox Navigation SDK (NDK) for Capacitor apps, allowing you to build professional-grade navigation apps with turn-by-turn guidance.
 
 ## Install
 
