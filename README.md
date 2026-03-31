@@ -1,4 +1,4 @@
-# capacitor-mapboxnav
+# @castelio-it/capacitor-mapboxnav
 
 capacitor mapbox navigation ndk
 
@@ -7,13 +7,13 @@ capacitor mapbox navigation ndk
 To use npm
 
 ```bash
-npm install capacitor-mapboxnav
+npm install @castelio-it/capacitor-mapboxnav
 ````
 
 To use bun
 
 ```bash
-bun add capacitor-mapboxnav
+bun add @castelio-it/capacitor-mapboxnav
 ```
 
 Sync native files
@@ -129,7 +129,7 @@ Shows the map centered on the user with no active route or destination.
 ### Example
 
 ```typescript
-import { capacitormapboxnav } from 'capacitor-mapboxnav';
+import { capacitormapboxnav } from '@castelio-it/capacitor-mapboxnav';
 
 async function startTurnByTurn() {
   await capacitormapboxnav.initialize({

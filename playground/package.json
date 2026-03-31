@@ -16,7 +16,7 @@
     "@capacitor/cli": "^8.3.0",
     "@capacitor/core": "^8.3.0",
     "@capacitor/geolocation": "^8.1.0",
-    "capacitor-mapboxnav": "..",
+    "@castelio-it/capacitor-mapboxnav": "..",
     "vue": "^3.5.31"
   },
   "devDependencies": {

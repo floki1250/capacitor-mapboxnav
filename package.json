@@ -1,5 +1,5 @@
 {
-  "name": "capacitor-mapboxnav",
+  "name": "@castelio-it/capacitor-mapboxnav",
   "version": "1.0.3",
   "description": "capacitor mapbox navigation ndk",
   "main": "dist/plugin.cjs.js",
@@ -7,15 +7,18 @@
   "types": "dist/esm/index.d.ts",
   "unpkg": "dist/plugin.js",
   "files": [
-    "android/src/main/",
-    "android/build.gradle",
+    "android/",
     "dist/",
     "ios/Sources",
     "ios/Tests",
     "Package.swift",
     "CapacitorMapboxnav.podspec"
   ],
-  "author": "castelioit",
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "author": "castelio-it",
   "license": "MIT",
   "repository": {
     "type": "git",

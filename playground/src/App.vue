@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref } from 'vue';
-import { capacitormapboxnav } from 'capacitor-mapboxnav';
+import { capacitormapboxnav } from '@castelio-it/capacitor-mapboxnav';
 import { Geolocation } from '@capacitor/geolocation';
 
 const isSimulating = ref(true);
