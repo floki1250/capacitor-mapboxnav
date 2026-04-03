@@ -3,7 +3,7 @@
 ![Android](https://img.shields.io/badge/Android-3DDC84?style=for-the-badge&logo=android&logoColor=white)
 [![NPM Version](https://img.shields.io/npm/v/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=3380FF)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
 [![NPM Downloads](https://img.shields.io/npm/dm/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=00D1B2)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
-[![License](https://img.shields.io/npm/l/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=F8D800)](https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav)
+[![License](https://img.shields.io/npm/l/@castelio-it/capacitor-mapboxnav?style=for-the-badge&color=F8D800)]([https://www.npmjs.com/package/@castelio-it/capacitor-mapboxnav](https://github.com/floki1250/capacitor-mapboxnav/blob/main/LICENSE))
 [![Capacitor](https://img.shields.io/badge/Capacitor-8+-blue?style=for-the-badge&logo=capacitor&logoColor=white)](https://capacitorjs.com/)
 
 > [!IMPORTANT]
